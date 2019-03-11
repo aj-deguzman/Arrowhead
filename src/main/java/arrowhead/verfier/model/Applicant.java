@@ -22,7 +22,6 @@ public class Applicant {
     private int act;
     private int felonies;
     private int latestFelonyAge;
-    private String results;
 
     public Long getId() {
 	return id;
@@ -110,13 +109,5 @@ public class Applicant {
 
     public void setlatestFelonyAge(int latestFelonyAge) {
 	this.latestFelonyAge = latestFelonyAge;
-    }
-
-    public String getResults() {
-	return results;
-    }
-
-    public void setResults(String results) {
-	this.results = results;
     }
 }

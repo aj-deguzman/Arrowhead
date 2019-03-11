@@ -4,21 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InstantReject extends CommonVerficiation {
-    private boolean isInstantReject;
     private boolean isFelonyAcceptable;
     private boolean nameInputAcceptable;
-
-    public InstantReject() {
-	isReject();
-    }
-
-    public boolean isInstantReject() {
-	return isInstantReject;
-    }
-
-    private void setInstantReject(boolean isInstantReject) {
-	this.isInstantReject = isInstantReject;
-    }
+    private int felonyAge;
 
     public boolean isFelonyAcceptable() {
 	return isFelonyAcceptable;
@@ -36,48 +24,55 @@ public class InstantReject extends CommonVerficiation {
 	this.nameInputAcceptable = nameInputAcceptable;
     }
 
+    public int getFelonyAge() {
+	return felonyAge;
+    }
+
+    public void setFelonyAge(int felonyAge) {
+	this.felonyAge = felonyAge;
+    }
+
     @Override
     public void verifyGPAScore() {
-	double decimalPerc = applicant.getGpa() / applicant.getGpaScale();
+	double decimalPerc = getGpa() / getGpaScale();
 	double perc = decimalPerc * 100;
 
 	if (perc < 70) {
-	    setGPAScoreAcceptable(false);
+	    this.setGPAScoreAcceptable(false);
 	} else {
-	    setGPAScoreAcceptable(true);
+	    this.setGPAScoreAcceptable(true);
 	}
     }
 
     public void verifyFelony() {
-	if (applicant.getFelonies() > 0) {
-	    if (applicant.getlatestFelonyAge() < 5) {
-		setFelonyAcceptable(false);
+	if (this.getFelonies() > 0) {
+	    if (this.getFelonyAge() < 5) {
+		this.setFelonyAcceptable(false);
 	    } else {
-		setFelonyAcceptable(true);
+		this.setFelonyAcceptable(true);
 	    }
 	}
     }
 
     public void verifyNameInput() {
 	Pattern p = Pattern.compile("^[A-Z]+$");
-	Matcher first = p.matcher(applicant.getFirstName().substring(1));
-	Matcher last = p.matcher(applicant.getLastName().substring(1));
+	Matcher first = p.matcher(this.getFirstName().substring(1));
+	Matcher last = p.matcher(this.getLastName().substring(1));
 
-	if ((Character.isLowerCase(applicant.getFirstName().charAt(0))
-		|| Character.isLowerCase(applicant.getLastName().charAt(0)))) {
-	    setNameInputAcceptable(false);
+	if ((Character.isLowerCase(getFirstName().charAt(0)) || Character.isLowerCase(getLastName().charAt(0)))) {
+	    this.setNameInputAcceptable(false);
 	} else if (first.matches() || last.matches()) {
-	    setNameInputAcceptable(false);
+	    this.setNameInputAcceptable(false);
 	} else {
-	    setNameInputAcceptable(true);
+	    this.setNameInputAcceptable(true);
 	}
     }
 
-    private void isReject() {
+    public boolean isReject() {
 	if (this.isFelonyAcceptable() && this.isNameInputAcceptable() && this.isGPAScoreAcceptable()) {
-	    setInstantReject(true);
+	    return true;
 	} else {
-	    setInstantReject(false);
+	    return false;
 	}
     }
 }

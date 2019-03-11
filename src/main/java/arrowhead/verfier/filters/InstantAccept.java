@@ -1,13 +1,9 @@
 package arrowhead.verfier.filters;
 
-public class InstantAccept extends CommonVerficiation {
+public class InstantAccept extends InstantReject {
     private boolean isInstantAccept;
     private boolean isSATACTAcceptable;
     private boolean reviewable;
-
-    public InstantAccept() {
-	verifyInstantAccept();
-    }
 
     public boolean isInstantAccept() {
 	return isInstantAccept;
@@ -34,28 +30,23 @@ public class InstantAccept extends CommonVerficiation {
     }
 
     public void verifySATOrACT() {
-	int sat = applicant.getSat();
-	int act = applicant.getAct();
-
-	if (!String.valueOf(sat).isEmpty() && applicant.getSat() > 1920) {
-	    setSATACTAcceptable(true);
-	} else if (!String.valueOf(act).isEmpty() && applicant.getAct() > 27) {
-	    setSATACTAcceptable(true);
+	if (!String.valueOf(this.getSat()).isEmpty() && this.getSat() > 1920) {
+	    this.setSATACTAcceptable(true);
+	} else if (!String.valueOf(this.getAct()).isEmpty() && this.getAct() > 27) {
+	    this.setSATACTAcceptable(true);
 	} else {
-	    setSATACTAcceptable(false);
+	    this.setSATACTAcceptable(false);
 	}
     }
 
     public void verifyInstantAccept() {
-	InstantReject ir = new InstantReject();
-
-	if (ir.isInstantReject()) {
-	    setInstantAccept(false);
+	if (this.isReject()) {
+	    this.setInstantAccept(false);
 	} else {
 	    if (this.isAgeAcceptable() && this.isGPAScoreAcceptable() && this.isSATACTAcceptable()) {
-		setInstantAccept(true);
+		this.setInstantAccept(true);
 	    } else {
-		setReviewable(true);
+		this.setReviewable(true);
 	    }
 	}
     }

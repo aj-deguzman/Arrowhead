@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import arrowhead.verfier.filters.InstantAccept;
-import arrowhead.verfier.filters.InstantReject;
 import arrowhead.verfier.model.Applicant;
 import arrowhead.verfier.repository.ApplicantRepo;
 
@@ -31,14 +30,24 @@ public class InputController {
 	Optional<Applicant> option = ar.findById(appId);
 	Applicant app = option.get();
 	InstantAccept ia = new InstantAccept();
-	InstantReject ir = new InstantReject();
 	String result = "";
 
-	if (ir.isInstantReject()) {
-	    result = "Instant Reject";
-	} else if (ia.isInstantAccept() == true) {
+	ia.setFirstName(app.getFirstName());
+	ia.setLastName(app.getLastName());
+	ia.setState(app.getState());
+	ia.setAge(app.getAge());
+	ia.setGpa(app.getGpa());
+	ia.setGpaScale(app.getGpaScale());
+	ia.setSat(app.getSat());
+	ia.setAct(app.getAct());
+	ia.setFelonies(app.getFelonies());
+	ia.setLatestFelonyAge(app.getlatestFelonyAge());
+
+	if (ia.isInstantAccept()) {
 	    result = "Instant Accept";
-	} else if (ia.getReviewable() == true) {
+	} else if (!ia.isInstantAccept()) {
+	    result = "Instant Reject";
+	} else if (ia.getReviewable()) {
 	    result = "Further Review";
 	}
 
